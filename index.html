@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.simplecss.org/simple.css">
+    <link rel="stylesheet" type="text/css" href="technological.css">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body class="tech-background" style="text-align: center">
+    <p> wish you a substantial day</p>
+    <p>to do list</p>
+    <label>
+        <input name="add-work" id="add-work" class="tech-input" style="width: 70%">
+        <button onclick='addWork()' class="tech-btn" style="display: inline;">增加</button>
+    </label>
+    <div id="container"></div>
+    <script>
+        'use strict'
+        $.ajax({
+            url:"http://localhost:3000/getAllWork",
+            method:"GET",
+            crossDomain: true,
+            success:(res)=>{
+                let con=document.getElementById("container");
+                let workList=JSON.parse(res)
+                console.log(workList)
+                workList=eval(workList)
+                for (let i=0;i<workList.length;i++){
+                    let list=document.createElement("label");
+                    list.innerHTML="<input name=\"work-list\" id=\"work"+i+"\" value='"+workList[i].work+"' class='tech-input' style=\"width: 70%\"> " +
+                        "<button onclick='deleteWork(this)' id='"+i+"' class='tech-btn' style=\"display: inline;\">完成</button>";
+                    con.appendChild(list);
+                }
+            }
+        })
+        function addWork(){
+            let work=document.getElementById("add-work").value;
+            $.ajax({
+                url: "http://localhost:3000/addWork",
+                method: "POST",
+                crossDomain: true,
+                data:{
+                    "work":work
+                },
+                success:(res)=>{
+                    // alert("success");
+                    location.reload();
+                }
+            })
+        }
+        function deleteWork(res){
+            let index=res.id;
+            $.ajax({
+                url: "http://localhost:3000/deleteWork",
+                method: "POST",
+                crossDomain: true,
+                data:{
+                    "id":index
+                },
+                success:(res)=>{
+                    // alert("success");
+                    location.reload();
+                }
+            })
+        }
+    </script>
+</body>
+</html>

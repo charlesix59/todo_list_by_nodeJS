@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+    <meta charset="UTF-8">
+    <title>历史记录可视化</title>
+    <script src="jquery-3.6.0.min.js"></script>
+    <style>
+        .row{
+            border: darkgray 1px solid;
+            border-radius: 3px;
+            margin-bottom: 1rem;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div style="margin-top: 10%;margin-left: 10%;width: 80%" id="container">
+
+    </div>
+</body>
+<script>
+    $.getJSON('history.json', function (data) {
+        let container = document.getElementById("container");
+        for (let i = 0; i < data.length; i++) {
+            // console.log(data[i]);
+            let row = document.createElement("div");
+            row.className = "row";
+            row.innerHTML = data[i].work + "<br>" + data[i].finishTime;
+            container.appendChild(row);
+        }
+    })
+</script>
+</html>
